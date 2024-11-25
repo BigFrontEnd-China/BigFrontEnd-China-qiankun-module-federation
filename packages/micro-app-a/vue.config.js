@@ -1,12 +1,14 @@
 const { defineConfig } = require("@vue/cli-service");
 const { resolve } = require("path");
-const { ModuleFederationPlugin } = require("webpack").container;
-const package = require("./package");
+const { ModuleFederationPlugin } = require("@module-federation/enhanced");
+
+const packageData = require("./package.json");
 const port = process.env.port || 8081;
 
 module.exports = defineConfig({
   transpileDependencies: true,
-  publicPath: process.env.NODE_ENV === "production" ? "/micro-app-a" : "/",
+  //publicPath: process.env.NODE_ENV === "production" ? "/micro-app-a" : "/",
+  publicPath: "auto",
   devServer: {
     port,
     open: {
@@ -20,11 +22,17 @@ module.exports = defineConfig({
     },
   },
   configureWebpack: {
+    optimization: {
+      runtimeChunk: false,
+      splitChunks: false,
+    },
     plugins: [
       new ModuleFederationPlugin({
-        name: "main_app",
-        filename: "remoteEntry.js",
-        exposes: {},
+        name: "microApp",
+        filename: "microApp.js",
+        exposes: {
+          "./ExposeRate": "./src/components/ExposeRate.vue",
+        },
         remotes: {
           // 引入
           module_federation:
@@ -32,7 +40,7 @@ module.exports = defineConfig({
         },
         shared: {
           vue: {
-            requiredVersion: package.dependencies["vue"],
+            requiredVersion: packageData.dependencies["vue"],
             singleton: true,
             eager: true,
             shareScope: "default",
@@ -47,9 +55,9 @@ module.exports = defineConfig({
     },
     output: {
       // 把子应用打包成 umd 库格式
-      library: `${package.name}`,
+      library: `${packageData.name}`,
       libraryTarget: "umd",
-      chunkLoadingGlobal: `webpackJsonp_${package.name}`,
+      chunkLoadingGlobal: `webpackJsonp_${packageData.name}`,
     },
   },
 });

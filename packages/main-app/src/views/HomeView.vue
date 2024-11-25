@@ -3,6 +3,7 @@
     <img alt="Vue logo" src="../assets/logo.png" />
     <div v-if="isLoadingComponent">Loading HelloWorld.vue</div>
     <HelloWorld msg="Main App Use Module Federation！" />
+    <ExposeRate :value="5" />
   </div>
 </template>
 
@@ -15,4 +16,5 @@ const HelloWorld = defineAsyncComponent(() =>
     isLoadingComponent.value = false;
   })
 );
+const ExposeRate = defineAsyncComponent(() => import("microApp/ExposeRate"));
 </script>

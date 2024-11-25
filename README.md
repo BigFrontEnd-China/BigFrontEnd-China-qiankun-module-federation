@@ -7,7 +7,7 @@
   │
   ├── main-app/ [主应用] (remotes module-federation)
   │
-  ├── micro-app-a/ [子应用] (remotes module-federation)
+  ├── micro-app-a/ [子应用] (remotes module-federation) [exposes]
   │
   ├── micro-app-b/ [子应用] (remotes module-federation)
   │
@@ -38,7 +38,7 @@ pnpm run lint || npm run lint
 
 ```
 "@vue/cli": "5.0.8",
-"qiankun": "^2.10.16",
+"qiankun": "2.10.16",
 "webpack": "5.95.0"
 ```
 ### Customize configuration

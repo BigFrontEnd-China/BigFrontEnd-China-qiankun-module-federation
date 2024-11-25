@@ -5,6 +5,8 @@ import App from "./App.vue";
 import routes from "./router";
 import store from "./store";
 import "./registerServiceWorker";
+import ArcoVue from "@arco-design/web-vue";
+import "@arco-design/web-vue/dist/arco.css";
 
 let router = null;
 let instance = null;
@@ -26,6 +28,7 @@ function render(props = {}) {
   instance = createApp(App);
   instance.use(router);
   instance.use(store);
+  instance.use(ArcoVue);
   instance.mount(container ? container.querySelector("#app") : "#app");
 }
 

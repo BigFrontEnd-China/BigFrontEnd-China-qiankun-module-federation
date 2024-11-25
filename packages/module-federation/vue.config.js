@@ -1,6 +1,8 @@
 const { defineConfig } = require("@vue/cli-service");
-const { ModuleFederationPlugin } = require("webpack").container;
-const package = require("./package");
+const {
+  ModuleFederationPlugin,
+} = require("@module-federation/enhanced");
+const packageData = require("./package.json");
 const port = process.env.port || 8083;
 
 module.exports = defineConfig({
@@ -35,11 +37,12 @@ module.exports = defineConfig({
         exposes: {
           // 对外暴露的组件
           "./HelloWorld": "./src/components/HelloWorld.vue",
+          "./ExposeRate": "./src/components/ExposeRate.vue",
         },
         remotes: {},
         shared: {
           vue: {
-            requiredVersion: package.dependencies["vue"],
+            requiredVersion: packageData.dependencies["vue"],
             singleton: true,
             eager: true,
             shareScope: "default",

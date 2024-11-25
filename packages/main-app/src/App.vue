@@ -4,11 +4,23 @@
     <router-link to="/about">About</router-link> |
     <router-link to="/micro-app-a">micro-app-a</router-link> |
     <router-link to="/micro-app-b">micro-app-b</router-link>
+    <div v-if="isLoadingComponent">Loading HelloWorld.vue</div>
+    <HelloWorld msg="Main App Container Use Module Federation！" />
+    <HelloWorld msg="MainXX App Container Use Module Federation！" />
   </nav>
   <router-view />
   <div id="container"></div>
 </template>
+<script setup>
+import { defineAsyncComponent, ref } from "vue";
+const isLoadingComponent = ref(true);
 
+const HelloWorld = defineAsyncComponent(() =>
+  import("module_federation/HelloWorld").finally(() => {
+    isLoadingComponent.value = false;
+  })
+);
+</script>
 <style lang="less">
 #app {
   height: 100%;

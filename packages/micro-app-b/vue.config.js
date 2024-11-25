@@ -1,7 +1,7 @@
 const { defineConfig } = require("@vue/cli-service");
 const { resolve } = require("path");
-const { ModuleFederationPlugin } = require("webpack").container;
-const package = require("./package");
+const { ModuleFederationPlugin } = require("@module-federation/enhanced");
+const packageData = require("./package.json");
 const port = process.env.port || 8082;
 
 module.exports = defineConfig({
@@ -22,17 +22,18 @@ module.exports = defineConfig({
   configureWebpack: {
     plugins: [
       new ModuleFederationPlugin({
-        name: "main_app",
-        filename: "remoteEntry.js",
+        name: "microAppB",
+        filename: "microAppB.js",
         exposes: {},
         remotes: {
           // 引入
+          microApp: "microApp@http://localhost:8081/microApp.js",
           module_federation:
             "module_federation@http://localhost:8083/remoteEntry.js",
         },
         shared: {
           vue: {
-            requiredVersion: package.dependencies["vue"],
+            requiredVersion: packageData.dependencies["vue"],
             singleton: true,
             eager: true,
             shareScope: "default",
@@ -47,9 +48,9 @@ module.exports = defineConfig({
     },
     output: {
       // 把子应用打包成 umd 库格式
-      library: `${package.name}`,
+      library: `${packageData.name}`,
       libraryTarget: "umd",
-      chunkLoadingGlobal: `webpackJsonp_${package.name}`,
+      chunkLoadingGlobal: `webpackJsonp_${packageData.name}`,
     },
   },
 });
