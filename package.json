@@ -1,0 +1,28 @@
+{
+  "name": "qiankun-module-federation",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "main-app:serve": "turbo run serve -F=main-app",
+    "micro-app-a:serve": "turbo run serve -F=micro-app-a",
+    "micro-app-b:serve": "turbo run serve -F=micro-app-b",
+    "module-federation:serve": "turbo run serve -F=module-federation",
+    "main-app:build": "turbo run build -F=main-app",
+    "micro-app-a:build": "turbo run build -F=micro-app-a",
+    "micro-app-b:build": "turbo run build -F=micro-app-b",
+    "module-federation:build": "turbo run build -F=module-federation",
+    "serve": "turbo run serve",
+    "build": "turbo run build",
+    "lint": "turbo run lint"
+  },
+  "author": "Jackson",
+  "license": "ISC",
+  "workspaces": [
+    "packages/**"
+  ],
+  "packageManager": "pnpm@9.7.0",
+  "devDependencies": {
+    "turbo": "^2.2.3"
+  }
+}
